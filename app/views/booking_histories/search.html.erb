@@ -1,0 +1,17 @@
+<%= form_for (@booking_history),:url=> url_for(:controller => 'booking_histories',:action =>'create') do |f| %>
+<table>
+  <tr>
+    <th>field1</th>
+    <th>field2</th>
+  </tr>
+  <% @booked_list.each do |data| %>
+      <tr>
+        <td><%= data.start_time %></td>
+        <td><%= data.end_time %></td>
+        <div class="actions">
+          <%= f.submit 'Book' %>
+        </div>
+      </tr>
+  <% end %>
+</table>
+<% end %>
