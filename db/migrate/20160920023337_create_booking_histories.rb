@@ -4,11 +4,12 @@ class CreateBookingHistories < ActiveRecord::Migration
       t.integer :booking_id
       t.string :username
       t.integer :room_num
-      t.time :start_time
-      t.time :end_time
+      t.integer :start_t
+      t.integer :end_t
       t.date :date
 
       t.timestamps null: false
     end
   end
 end
+

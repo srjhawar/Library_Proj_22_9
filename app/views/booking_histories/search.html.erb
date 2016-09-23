@@ -1,17 +1,49 @@
-<%= form_for (@booking_history),:url=> url_for(:controller => 'booking_histories',:action =>'create') do |f| %>
 <table>
-  <tr>
-    <th>field1</th>
-    <th>field2</th>
-  </tr>
-  <% @booked_list.each do |data| %>
       <tr>
-        <td><%= data.start_time %></td>
-        <td><%= data.end_time %></td>
-        <div class="actions">
-          <%= f.submit 'Book' %>
-        </div>
+        <th>Username </th>
+       <th>Start Time</th>
+       <th>End Time</th>
+
       </tr>
+      <% @booked_list.each do |data| %>
+          <tr>
+            <td><%= data.username %></td>
+            <td><%= data.start_t %></td>
+            <td><%= data.end_t %></td>
+           </tr>
   <% end %>
 </table>
+    <%= form_for (@booking),:url=> url_for(:controller => 'booking_histories',:action =>'create') do |f| %>
+
+    <div class="field">
+      <%= f.label :id %><br>
+      <%= f.number_field :id %>
+    </div>
+    <div class="field">
+      <%= f.label :username %><br>
+      <%= f.text_field :username %>
+    </div>
+    <div class="field">
+      <%= f.label :room_num %><br>
+      <%= f.number_field :room_num %>
+    </div>
+    <div class="field">
+      <%= f.label :start_t %><br>
+      <%= f.select :start_t,options_for_select(1..23) %>
+    </div>
+    <div class="field">
+      <%= f.label :end_t %><br>
+      <%= f.select :end_t ,options_for_select(1..23)%>
+    </div>
+    <div class="field">
+      <%= f.label :date %><br>
+      <%= f.date_select :date %>
+    </div>
+    <div class="actions">
+      <%= f.submit "Book" %>
+
+
+    </div>
+
+
 <% end %>

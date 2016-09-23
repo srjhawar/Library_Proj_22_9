@@ -3,30 +3,13 @@
 <!%= render 'form' %>'
 <%= form_for (@booking_history),:url=> url_for(:controller => 'booking_histories',:action =>'search') do |f| %>
 
-    <div class="field">
-      <%= f.label :id %><br>
-      <%= f.number_field :id %>
-    </div>
-    <div class="field">
-      <%= f.label :username %><br>
-      <%= f.text_field :username %>
-    </div>
+
+
     <div class="field">
       <%= f.label :room_num %><br>
       <%= f.number_field :room_num %>
     </div>
-    <div class="field">
-      <%= f.label :start_time %><br>
-      <%= f.time_select :start_time %>
-    </div>
-    <div class="field">
-      <%= f.label :end_time %><br>
-      <%= f.time_select :end_time %>
-    </div>
-    <div class="field">
-      <%= f.label :date %><br>
-      <%= f.date_select :date %>
-    </div>
+
     <div class="actions">
       <%= f.submit "Search" %>
 

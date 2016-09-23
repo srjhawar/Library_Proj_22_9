@@ -8,7 +8,7 @@ Rails.application.routes.draw do
    get '/booking_histories/index',to: 'booking_histories#index',as: 'booking_histories'
    get '/booking_histories/new',to: 'booking_histories#new',as: 'new_booking_history'
    get '/booking_histories/edit',to: 'booking_histories#edit',as:'edit_booking_history'
-   get '/booking_histories/show',to: 'booking_histories#show'
+   get '/booking_histories/show', to: 'booking_histories#show', as: 'booking_history'
    get '/booking_histories/destroy',to: 'booking_histories#destroy'
    post '/booking_histories/create',to: 'booking_histories#create'
 

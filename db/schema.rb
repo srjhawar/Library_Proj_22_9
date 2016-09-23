@@ -20,8 +20,8 @@ ActiveRecord::Schema.define(version: 20160920023337) do
     t.integer  "booking_id"
     t.string   "username"
     t.integer  "room_num"
-    t.time     "start_time"
-    t.time     "end_time"
+    t.integer  "start_t"
+    t.integer  "end_t"
     t.date     "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
