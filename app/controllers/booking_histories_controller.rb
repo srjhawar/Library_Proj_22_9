@@ -49,35 +49,41 @@ class BookingHistoriesController < ApplicationController
       bh.room_num == @booking_history.room_num
     end
 
-    #@booked_entry.each do |entry|
-     # if entry != nil
-      #  then
+    @booked_entry.each do |entry|
+      if entry != nil
+        then
 
-     #   if ((@booking_history.end_time <= entry.start_time)\
-     #      || (@booking_history.start_time >= entry.end_time)\
-     #      && (@booking_history.start_time < @booking_history.end_time))\
-      #  then
-       #   check = 0
-       # else
-       #   check = 1
-      #end
-#    end
- #   end
-   #  if check == 0
-  #   flash[:error] = "Could not reserve a room, please recheck the timings"
-
-
-    respond_to do |format|
-      if (@booking_history.save)
-        flash[:notice] = "Booking was successfully created. Booking id #{@booking_history.id}"
-        format.html { redirect_to booking_histories_path}
-       # format.json { render :show, status: :created, location: @booking_history }
-      else
-        format.html { render :new }
-        format.json { render json: @booking_history.errors, status: :unprocessable_entity }
+        if ((@booking_history.end_t <= entry.start_t)\
+           || (@booking_history.start_t >= entry.end_t)\
+           && (@booking_history.start_t < @booking_history.end_t))\
+         then
+          check = 0
+        else
+          check = 1
       end
     end
     end
+
+
+
+    respond_to do |format|
+      if check ==0
+        if (@booking_history.save)
+          flash[:notice] = "Booking was successfully created. Booking id #{@booking_history.id}"
+          format.html { redirect_to booking_histories_path}
+       # format.json { render :show, status: :created, location: @booking_history }
+        else
+          flash[:notice] = "Booking was failed. Booking id #{@booking_history.id}"
+          format.html { redirect_to booking_histories_path }
+       # format.json { render json: @booking_history.errors, status: :unprocessable_entity }
+        end
+      else
+        flash[:notice] = "Booking failed due to time conflict. Booking id #{@booking_history.id}"
+        format.html { redirect_to booking_histories_path }
+        end
+
+    end
+     end
 
 
   # PATCH/PUT /booking_histories/1

@@ -31,7 +31,7 @@ class LibraryRoomsController < ApplicationController
         format.html { redirect_to @library_room, notice: 'Library room was successfully created.' }
         format.json { render :show, status: :created, location: @library_room }
       else
-        format.html { render :new }
+        format.html { redirect_to @library_room, notice: 'Library room was failed.' }
         format.json { render json: @library_room.errors, status: :unprocessable_entity }
       end
     end
