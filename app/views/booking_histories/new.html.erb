@@ -1,6 +1,6 @@
 <h1>New Booking History</h1>
 
-<!%= render 'form' %>'
+<!%= render 'form' %>
 <%= form_for (@booking_history),:url=> url_for(:controller => 'booking_histories',:action =>'search') do |f| %>
 
 
@@ -15,7 +15,11 @@
 
 
     </div>
-    <%= link_to 'Search', search_booking_history_path %>
+    <div class="field">
+      <%= f.label :date %><br>
+      <%= f.date_select :date %>
+    </div>
+
 
 <% end %>
 

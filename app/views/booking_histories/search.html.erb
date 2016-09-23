@@ -1,3 +1,5 @@
+<h1>Bookings for Date</h1>
+<%= @booking.date %>
 <table>
       <tr>
         <th>Username </th>
@@ -15,10 +17,7 @@
 </table>
     <%= form_for (@booking),:url=> url_for(:controller => 'booking_histories',:action =>'create') do |f| %>
 
-    <div class="field">
-      <%= f.label :id %><br>
-      <%= f.number_field :id %>
-    </div>
+
     <div class="field">
       <%= f.label :username %><br>
       <%= f.text_field :username %>
@@ -28,11 +27,11 @@
       <%= f.number_field :room_num %>
     </div>
     <div class="field">
-      <%= f.label :start_t %><br>
+      <%= f.label :start_time_t %><br>
       <%= f.select :start_t,options_for_select(1..23) %>
     </div>
     <div class="field">
-      <%= f.label :end_t %><br>
+      <%= f.label :end_time %><br>
       <%= f.select :end_t ,options_for_select(1..23)%>
     </div>
     <div class="field">

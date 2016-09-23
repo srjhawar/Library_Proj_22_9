@@ -15,11 +15,12 @@ class BookingHistoriesController < ApplicationController
   def search
     #@booked_list = BookingHistory.where(room_num: params[:room_num])
     @booking = BookingHistory.new(booking_history_params)
-    @booked_list = BookingHistory.all
-    @booked_entry = @booked_list.select do |bh|
-     # bh.room_num == params[:room_num]
-      bh.room_num == @booking.room_num
-    end
+   # @booked_list = BookingHistory.all
+   # @booked_entry = @booked_list.select do |bh|
+
+    #  bh.room_num == @booking.room_num && bh.date == @booking.date
+    @booked_list = BookingHistory.where("room_num = ? AND date = ?",@booking.room_num,@booking.date )
+
 
 
   end
@@ -42,12 +43,13 @@ class BookingHistoriesController < ApplicationController
   # POST /booking_histories
   # POST /booking_histories.json
   def create
-    check = 0;
+    check = 0
     @booking_history = BookingHistory.new(booking_history_params)
-    @booked_list = BookingHistory.all
-    @booked_entry = @booked_list.select do |bh|
-      bh.room_num == @booking_history.room_num
-    end
+   # @booked_list = BookingHistory.all
+    #@booked_entry = @booked_list.select do |bh|
+     # bh.room_num == @booking_history.room_num && bh.date == Date.today + 7.days
+    #end
+    @booked_entry = BookingHistory.where("room_num = ? AND date = ?",@booking_history.room_num,@booking_history.date )
 
     @booked_entry.each do |entry|
       if entry != nil
