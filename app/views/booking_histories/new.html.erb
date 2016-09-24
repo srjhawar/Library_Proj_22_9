@@ -2,24 +2,19 @@
 
 <!%= render 'form' %>
 <%= form_for (@booking_history),:url=> url_for(:controller => 'booking_histories',:action =>'search') do |f| %>
-
-
-
     <div class="field">
       <%= f.label :room_num %><br>
       <%= f.number_field :room_num %>
     </div>
     <div class="field">
-
-
       <%= f.label :building %><br>
-      <%= f.text_field :building %>
+      <%= f.select :building, options_for_select([["Select One", ""], "DH Hill", "Hunt"])%>
     </div>
 
     </div>
     <div class="field">
       <%= f.label :size %><br>
-      <%= f.text_field :building %>
+      <%= f.select :size, options_for_select([["Select One", ""], "1", "2"])%>
     </div>
 
     <div class="actions">

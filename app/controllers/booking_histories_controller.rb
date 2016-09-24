@@ -14,23 +14,22 @@ class BookingHistoriesController < ApplicationController
 
   def search
     #@booked_list = BookingHistory.where(room_num: params[:room_num])
-    if params[:room_num]
-       @booking = BookingHistory.new(booking_history_params)
+    @booking = BookingHistory.new(booking_history_params)
    # @booked_list = BookingHistory.all
    # @booked_entry = @booked_list.select do |bh|
 
     #  bh.room_num == @booking.room_num && bh.date == @booking.date
-        @booked_list = BookingHistory.where("room_num = ? AND date = ?",@booking.room_num,@booking.date )
-        @booked_list
+    if params[:room_num]
+        @booked_list = BookingHistory.where("room_num = ? AND date = ?",@booking.room_num,@booking.date)
 
     elsif params[:building]
      # @library = LibraryRoom.new(library: '{#params[:library]}')
-       # @booked_list = BookingHistory.joins("INNER JOINS library_rooms ON library_rooms.room_num = booking_histories.room_num")
+    #  @booked_list = BookingHistory.joins("INNER JOIN library_rooms ON library_rooms.number = booking_histories.room_num").where("building = ? AND date = ?",@booking.building,@booking.date )
       @booked_list = BookingHistory.where("building = ? AND date = ?",@booking.building,@booking.date )
 
     elsif params[:size]
      # @library = LibraryRoom.new(library: '{#params[:size]}')
-      # @booked_list = BookingHistory.joins("INNER JOINS library_rooms ON library_rooms.room_num = booking_histories.room_num")
+     #  @booked_list = BookingHistory.joins("INNER JOIN library_rooms ON library_rooms.number = booking_histories.number").where("size = ? AND date = ?",@booking.size,@booking.date )
       @booked_list = BookingHistory.where("size = ? AND date = ?",@booking.size,@booking.date )
     end
     end

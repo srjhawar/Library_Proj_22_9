@@ -1,19 +1,39 @@
-<h1>Bookings for Date</h1>
-<%= @booking.date %>
+<h2>Bookings for Date</h2>
+<% if @booking != nil %>
+    <%= @booking.date %>
+    <% end %>
 <table>
       <tr>
+        <th>Room Num </th>
         <th>Username </th>
        <th>Start Time</th>
        <th>End Time</th>
-
+        <th> Size </th>
+        <th> Building </th>
       </tr>
-      <% @booked_list.each do |data| %>
+      <% if @booked_list == nil %>
+           <h3>Bookings for these conditions empty</h3>
+      <% else %>
+           <% @booked_list.each do |data| %>
           <tr>
+            <td><%= data.room_num %></td>
             <td><%= data.username %></td>
             <td><%= data.start_t %></td>
             <td><%= data.end_t %></td>
+            <td><%= data.size %></td>
+            <td><%= data.building %></td>
            </tr>
+          <% end %>
   <% end %>
+  <% if @booking.room_num != nil %>
+  <h2>Details of Room :</h2>
+  <% @location = LibraryRoom.select("building").where("number = ?",@booking.room_num) %>
+  <% building_entry = @location.as_json[0]["building"] %>
+      <%= "Building : #{building_entry}" %></br>
+      <% @size = LibraryRoom.select("size").where("number = ?",@booking.room_num) %>
+      <% size_entry = @size.as_json[0]["size"] %>
+      <%= "Size : #{size_entry}" %>
+      <% end %>
 </table>
     <%= form_for (@booking),:url=> url_for(:controller => 'booking_histories',:action =>'create') do |f| %>
 
@@ -38,10 +58,17 @@
       <%= f.label :date %><br>
       <%= f.date_select :date %>
     </div>
+    <div class="field">
+      <%= f.label :building %><br>
+      <%= f.select :building, options_for_select([["Select One", ""], "DH Hill", "Hunt"])%>
+    </div>
+
+    <div class="field">
+      <%= f.label :size %><br>
+      <%= f.select :size, options_for_select([["Select One", ""], "2", "4","6"])%>
+    </div>
     <div class="actions">
       <%= f.submit "Book" %>
-
-
     </div>
 
 
