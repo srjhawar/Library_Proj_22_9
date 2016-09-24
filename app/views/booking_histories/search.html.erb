@@ -1,6 +1,9 @@
 <h2>Bookings for Date</h2>
 <% if @booking != nil %>
     <%= @booking.date %>
+    <%="Booking building : #{@booking.building}" %>
+    <%= @booking.size %>
+
     <% end %>
 <table>
       <tr>
@@ -14,6 +17,20 @@
       <% if @booked_list == nil %>
            <h3>Bookings for these conditions empty</h3>
       <% else %>
+
+      <% if @booking.building %>
+          <%= "Booking searched for building #{@booking.building}" %>
+
+          <% @list_building = LibraryRoom.joins("LEFT OUTER JOIN booking_histories ON library_rooms.number = booking_histories.room_num") %>
+          <% @booked_list = BookingHistory.where("booking_histories.building = ? AND date = ?",@booking.building,@booking.date ) %>
+
+      <% elseif @booking.size %>
+          <%= "Booking searched for size #{@booking.size}" %>
+          <% @list_size = LibraryRoom.joins("LEFT OUTER JOIN booking_histories ON library_rooms.number = booking_histories.room_num") %>
+          <% @booked_list = BookingHistory.where("booking_histories.size = ? AND date = ?",@booking.size,@booking.date ) %>
+      <% end %>
+
+
            <% @booked_list.each do |data| %>
           <tr>
             <td><%= data.room_num %></td>
@@ -23,11 +40,13 @@
             <td><%= data.size %></td>
             <td><%= data.building %></td>
            </tr>
+
           <% end %>
   <% end %>
   <% if @booking.room_num != nil %>
-  <h2>Details of Room :</h2>
-  <% @location = LibraryRoom.select("building").where("number = ?",@booking.room_num) %>
+  <h2>Details of Room </h2>
+  <!% @location = LibraryRoom.select("building").where("number = ?",@booking.room_num) %>
+      <% @location = LibraryRoom.where("number = ?",@booking.room_num) %>
   <% building_entry = @location.as_json[0]["building"] %>
       <%= "Building : #{building_entry}" %></br>
       <% @size = LibraryRoom.select("size").where("number = ?",@booking.room_num) %>
@@ -60,7 +79,8 @@
     </div>
     <div class="field">
       <%= f.label :building %><br>
-      <%= f.select :building, options_for_select([["Select One", ""], "DH Hill", "Hunt"])%>
+      <%= f.select :building, options_for_select([["Select One", ""], "DH Hill", "Hunt"]) %>
+
     </div>
 
     <div class="field">

@@ -1,5 +1,5 @@
 class BookingHistoriesController < ApplicationController
- # before_action :set_booking_history, only: [:show, :edit, :update, :destroy, :search]
+  #before_action :set_booking_history, only: [:show, :edit, :update, :destroy, :search]
 
   # GET /booking_histories
   # GET /booking_histories.json
@@ -18,19 +18,21 @@ class BookingHistoriesController < ApplicationController
    # @booked_list = BookingHistory.all
    # @booked_entry = @booked_list.select do |bh|
 
+
     #  bh.room_num == @booking.room_num && bh.date == @booking.date
-    if params[:room_num]
-        @booked_list = BookingHistory.where("room_num = ? AND date = ?",@booking.room_num,@booking.date)
+    if params[:booking_history][:room_num]
+        @booked_list = BookingHistory.where("booking_histories.room_num = ? AND date = ?",@booking.room_num,@booking.date)
 
-    elsif params[:building]
-     # @library = LibraryRoom.new(library: '{#params[:library]}')
-    #  @booked_list = BookingHistory.joins("INNER JOIN library_rooms ON library_rooms.number = booking_histories.room_num").where("building = ? AND date = ?",@booking.building,@booking.date )
-      @booked_list = BookingHistory.where("building = ? AND date = ?",@booking.building,@booking.date )
+    #elsif params[:booking_history][:building]
+   # elsif @booking.building
+     # @booked_list = BookingHistory.joins("LEFT OUTER JOIN library_rooms ON library_rooms.number = booking_histories.room_num")
+    #  @booked_list = booked_list_pre.where("booking_histories.building = ? AND date = ?",@booking.building,@booking.date )
+    #  @booked_list = BookingHistory.where("booking_histories.building = ? AND date = ?",@booking.building,@booking.date )
 
-    elsif params[:size]
+   # elsif params[:booking_history][:size]
      # @library = LibraryRoom.new(library: '{#params[:size]}')
-     #  @booked_list = BookingHistory.joins("INNER JOIN library_rooms ON library_rooms.number = booking_histories.number").where("size = ? AND date = ?",@booking.size,@booking.date )
-      @booked_list = BookingHistory.where("size = ? AND date = ?",@booking.size,@booking.date )
+     #  @booked_list = BookingHistory.joins("INNER JOIN library_rooms ON library_rooms.number = booking_histories.number").where("booking_histories.size = ? AND date = ?",@booking.size,@booking.date )
+      #@booked_list = BookingHistory.where("booking_histories.size = ? AND date = ?",@booking.size,@booking.date )
     end
     end
 
@@ -130,7 +132,7 @@ class BookingHistoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def booking_history_params
-      params.require(:booking_history).permit(:id, :username, :room_num, :start_t, :end_t, :date)
+      params.require(:booking_history).permit(:id, :username, :room_num, :start_t, :end_t, :date, :building, :size)
     end
 end
 

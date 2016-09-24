@@ -9,18 +9,15 @@
     <div class="field">
       <%= f.label :building %><br>
       <%= f.select :building, options_for_select([["Select One", ""], "DH Hill", "Hunt"])%>
-    </div>
 
     </div>
     <div class="field">
       <%= f.label :size %><br>
-      <%= f.select :size, options_for_select([["Select One", ""], "1", "2"])%>
+      <%= f.select :size, options_for_select([["Select One", ""], "2", "4","6"])%>
     </div>
 
     <div class="actions">
       <%= f.submit "Search" %>
-
-
     </div>
     <div class="field">
       <%= f.label :date %><br>

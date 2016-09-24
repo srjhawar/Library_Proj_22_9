@@ -7,6 +7,8 @@ class CreateBookingHistories < ActiveRecord::Migration
       t.integer :start_t
       t.integer :end_t
       t.date :date
+      t.string :building
+      t.integer :size
 
       t.timestamps null: false
     end
