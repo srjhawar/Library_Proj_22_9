@@ -2,58 +2,87 @@
 <% if @booking != nil %>
     <%= @booking.date %>
     <% end %>
-<table>
-      <tr>
-        <th>Room Num </th>
-        <th>Username </th>
-       <th>Start Time</th>
-       <th>End Time</th>
-        <th> Size </th>
-        <th> Building </th>
-      </tr>
+    <% l_rooms = Array.new %>
+    <% size_rooms = Array.new %>
       <% if @booked_list == nil %>
            <h3>Bookings for these conditions empty</h3>
       <% else %>
+          <% if (@booking.building == 'DH Hill' || @booking.building == 'Hunt' ) %>
+              <%= "Booking searched for building #{@booking.building}" %>
 
-      <% if (@booking.building == 'DH Hill' || @booking.building == 'Hunt' ) %>
-          <%= "Booking searched for building #{@booking.building}" %>
+              <% @list_building = LibraryRoom.where("library_rooms.building = ?",@booking.building ) %>
+              <% @booked_list = BookingHistory.where("booking_histories.building = ? AND date = ?",@booking.building,@booking.date ).order(:start_t) %>
+              <% @list_building.each do |room| %>
+              <% bl = @booked_list.find_by_room_num(room.number) %>
+              <%  if bl %>
+                <h3>Its der</h3>
+              <% else %>
+                  <% l_rooms << room.number %>
+              <% end %>
+              <% end %>
+              <h3> List of Available Rooms </h3>
+              <table>
+              <% l_rooms.each do |room_l| %>
+                   <tr>
+                    <td><%= room_l %></td>
+                  </tr>
+              <% end %>
+              </table>
 
-          <% @list_building = LibraryRoom.joins("LEFT OUTER JOIN booking_histories ON library_rooms.number = booking_histories.room_num") %>
-          <% @booked_list = BookingHistory.where("booking_histories.building = ? AND date = ?",@booking.building,@booking.date ).order(:start_t) %>
+           <% elsif @booking.size %>
+              <%= "Booking searched for size #{@booking.size}" %>
+              <% @list_size = LibraryRoom.where("library_rooms.size = ?",@booking.size ) %>
+              <% @booked_list = BookingHistory.where("booking_histories.size = ? AND date = ?",@booking.size,@booking.date ).order(:start_t) %>
+              <% @list_size.each do |room| %>
+              <% sl = @booked_list.find_by_room_num(room.number) %>
+                 <%  if sl %>
+                    <h3>Its der</h3>
+                  <% else %>
+                    <% size_rooms << room.number %>
+                  <% end %>
+                  <% end %>
+                  <h3> List of Available Rooms </h3>
+                  <% size_rooms.each do |room_s| %>
+                      <tr>
+                        <td><%= room_s %></td>
+                      </tr>
+              <% end %>
+              <% end %>
 
-      <% elsif @booking.size %>
-          <%= "Booking searched for size #{@booking.size}" %>
-          <% @list_size = LibraryRoom.joins("LEFT OUTER JOIN booking_histories ON library_rooms.number = booking_histories.room_num") %>
-          <% @booked_list = BookingHistory.where("booking_histories.size = ? AND date = ?",@booking.size,@booking.date ).order(:start_t) %>
-      <% end %>
-
-
+          <table>
+           <tr>
+             <th>Room Num </th>
+             <th>Username </th>
+             <th>Start Time</th>
+             <th>End Time</th>
+             <th> Size </th>
+             <th> Building </th>
+           </tr>
            <% @booked_list.each do |data| %>
-          <tr>
-            <td><%= data.room_num %></td>
-            <td><%= data.username %></td>
-            <td><%= data.start_t %></td>
-            <td><%= data.end_t %></td>
-            <td><%= data.size %></td>
-            <td><%= data.building %></td>
+            <tr>
+             <td><%= data.room_num %></td>
+             <td><%= data.username %></td>
+             <td><%= data.start_t %></td>
+             <td><%= data.end_t %></td>
+             <td><%= data.size %></td>
+             <td><%= data.building %></td>
            </tr>
 
           <% end %>
-  <% end %>
+          </table>
+      <% end %>
   <% if @booking.room_num != nil %>
   <h2>Details of Room </h2>
-  <!% @location = LibraryRoom.select("building").where("number = ?",@booking.room_num) %>
+
       <% @location = LibraryRoom.where("number = ?",@booking.room_num) %>
-  <% building_entry = @location.as_json[0]["building"] %>
+      <% building_entry = @location.as_json[0]["building"] %>
       <%= "Building : #{building_entry}" %></br>
       <% @size = LibraryRoom.select("size").where("number = ?",@booking.room_num) %>
       <% size_entry = @size.as_json[0]["size"] %>
       <%= "Size : #{size_entry}" %>
-      <% end %>
-</table>
-    <%= form_for (@booking),:url=> url_for(:controller => 'booking_histories',:action =>'create') do |f| %>
+  <% end %>
 
-
+<%= form_for (@booking),:url=> url_for(:controller => 'booking_histories',:action =>'create') do |f| %>
     <div class="field">
       <%= f.label :username %><br>
       <%= f.text_field :username %>
@@ -77,9 +106,7 @@
     <div class="field">
       <%= f.label :building %><br>
       <%= f.select :building, options_for_select([["Select One", ""], "DH Hill", "Hunt"]) %>
-
     </div>
-
     <div class="field">
       <%= f.label :size %><br>
       <%= f.select :size, options_for_select([["Select One", ""], "2", "4","6"])%>

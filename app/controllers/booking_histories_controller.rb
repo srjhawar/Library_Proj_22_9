@@ -15,8 +15,7 @@ class BookingHistoriesController < ApplicationController
   def search
     #@booked_list = BookingHistory.where(room_num: params[:room_num])
     @booking = BookingHistory.new(booking_history_params)
-   # @booked_list = BookingHistory.all
-   # @booked_entry = @booked_list.select do |bh|
+
 
 
     #  bh.room_num == @booking.room_num && bh.date == @booking.date
@@ -97,7 +96,7 @@ class BookingHistoriesController < ApplicationController
           flash[:notice] = "Booking failed due to time conflict. Booking id #{@booking_history.id}"
         end
         format.html { redirect_to booking_histories_path }
-        end
+      end
 
     end
      end
