@@ -20,6 +20,7 @@ class BookingHistoriesController < ApplicationController
 
     #  bh.room_num == @booking.room_num && bh.date == @booking.date
     if params[:booking_history][:room_num]
+        @rooms_matching_library =  LibraryRoom.where("library_rooms.number = ?",@booking.room_num )
         @booked_list = BookingHistory.where("booking_histories.room_num = ? AND date = ?",@booking.room_num,@booking.date)
 
     #elsif params[:booking_history][:building]
