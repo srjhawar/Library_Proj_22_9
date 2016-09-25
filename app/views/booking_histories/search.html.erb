@@ -4,6 +4,7 @@
     <% end %>
     <% l_rooms = Array.new %>
     <% size_rooms = Array.new %>
+    <% start_times = Array.new %>
       <% if @booked_list == nil %>
            <h3>Bookings for these conditions empty</h3>
       <% else %>
@@ -34,6 +35,38 @@
                   </tr>
               <% end %>
               </table>
+
+              <table border=2"  >
+
+                <%= render 'timegrid' %>
+
+                <% @list_building.each do |room_l| %><!Loop 1 for room>
+                    <% start_times = Array.new %>
+                    <tr>
+                      <td><%= room_l.number %></td>
+
+                      <% bl = @booked_list.where("booking_histories.room_num = ?",room_l.number ) %>
+                      <% bl.each do |same_room| %>
+                          <% start_times << same_room.start_t %>
+                          <% end %>
+                      <% (0..24).each do |hour| %>
+                        <% if start_times.include?(hour) %>
+                          <td bgcolor = #ff6347> Booked </td>
+                              <% else %>
+                              <td bgcolor="#7fff00">Free</td>
+                              <% end %>
+                          <% end %>
+
+                              </tr>
+                    <% end %>
+
+
+
+
+               </table>
+
+
+
 
            <% elsif @booking.size %>
               <%= "Booking searched for size #{@booking.size}" %>
@@ -83,7 +116,7 @@
 
           <% end %>
           </table>
-      <% end %>
+    <% end %>
   <% if @booking.room_num != nil %>
   <h2>Details of Room </h2>
 
@@ -123,3 +156,4 @@
 
 
 <% end %>
+
