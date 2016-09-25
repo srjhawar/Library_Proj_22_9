@@ -17,14 +17,20 @@
               <%  if bl %>
                 <h3>Its der</h3>
               <% else %>
-                  <% l_rooms << room.number %>
+                  <% l_rooms << room %>
               <% end %>
               <% end %>
               <h3> List of Available Rooms </h3>
               <table>
+                <tr>
+                  <th>Room Num </th>
+                  <th>Size </th>
+                </tr>
               <% l_rooms.each do |room_l| %>
                    <tr>
-                    <td><%= room_l %></td>
+                    <td><%= room_l.number %></td>
+                     <td><%= room_l.size %></td>
+
                   </tr>
               <% end %>
               </table>
@@ -36,19 +42,26 @@
               <% @list_size.each do |room| %>
               <% sl = @booked_list.find_by_room_num(room.number) %>
                  <%  if sl %>
-                    <h3>Its der</h3>
                   <% else %>
-                    <% size_rooms << room.number %>
+                    <% size_rooms << room %>
                   <% end %>
-                  <% end %>
+                  <% end %><br>
+
                   <h3> List of Available Rooms </h3>
+                   <table>
+                     <tr>
+                       <th>Room Num </th>
+                       <th>Size </th>
+                     </tr>
                   <% size_rooms.each do |room_s| %>
                       <tr>
-                        <td><%= room_s %></td>
+                        <td><%= room.number %></td>
+                        <td><%= room.building %></td>
                       </tr>
               <% end %>
+                     </table>
               <% end %>
-
+          <h3>Bookings for today</h3>
           <table>
            <tr>
              <th>Room Num </th>
@@ -103,14 +116,7 @@
       <%= f.label :date %><br>
       <%= f.date_select :date %>
     </div>
-    <div class="field">
-      <%= f.label :building %><br>
-      <%= f.select :building, options_for_select([["Select One", ""], "DH Hill", "Hunt"]) %>
-    </div>
-    <div class="field">
-      <%= f.label :size %><br>
-      <%= f.select :size, options_for_select([["Select One", ""], "2", "4","6"])%>
-    </div><br>
+
     <div class="actions">
       <%= f.submit "Book" %>
     </div>
