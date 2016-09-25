@@ -1,9 +1,6 @@
 <h2>Bookings for Date</h2>
 <% if @booking != nil %>
     <%= @booking.date %>
-    <%="Booking building : #{@booking.building}" %>
-    <%= @booking.size %>
-
     <% end %>
 <table>
       <tr>
@@ -18,16 +15,16 @@
            <h3>Bookings for these conditions empty</h3>
       <% else %>
 
-      <% if @booking.building %>
+      <% if (@booking.building == 'DH Hill' || @booking.building == 'Hunt' ) %>
           <%= "Booking searched for building #{@booking.building}" %>
 
           <% @list_building = LibraryRoom.joins("LEFT OUTER JOIN booking_histories ON library_rooms.number = booking_histories.room_num") %>
-          <% @booked_list = BookingHistory.where("booking_histories.building = ? AND date = ?",@booking.building,@booking.date ) %>
+          <% @booked_list = BookingHistory.where("booking_histories.building = ? AND date = ?",@booking.building,@booking.date ).order(:start_t) %>
 
-      <% elseif @booking.size %>
+      <% elsif @booking.size %>
           <%= "Booking searched for size #{@booking.size}" %>
           <% @list_size = LibraryRoom.joins("LEFT OUTER JOIN booking_histories ON library_rooms.number = booking_histories.room_num") %>
-          <% @booked_list = BookingHistory.where("booking_histories.size = ? AND date = ?",@booking.size,@booking.date ) %>
+          <% @booked_list = BookingHistory.where("booking_histories.size = ? AND date = ?",@booking.size,@booking.date ).order(:start_t) %>
       <% end %>
 
 
@@ -86,7 +83,7 @@
     <div class="field">
       <%= f.label :size %><br>
       <%= f.select :size, options_for_select([["Select One", ""], "2", "4","6"])%>
-    </div>
+    </div><br>
     <div class="actions">
       <%= f.submit "Book" %>
     </div>

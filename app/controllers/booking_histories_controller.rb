@@ -60,15 +60,15 @@ class BookingHistoriesController < ApplicationController
     #@booked_entry = @booked_list.select do |bh|
      # bh.room_num == @booking_history.room_num && bh.date == Date.today + 7.days
     #end
-    @booked_entry = BookingHistory.where("room_num = ? AND date = ?",@booking_history.room_num,@booking_history.date )
+    @booked_entry = BookingHistory.where("room_num = ? AND date = ?",@booking_history.room_num,@booking_history.date ).order(:start_t)
 
     @booked_entry.each do |entry|
       if entry != nil
         then
 
-        if ((@booking_history.end_t <= entry.start_t)\
-           || (@booking_history.start_t >= entry.end_t)\
-           && (@booking_history.start_t < @booking_history.end_t))\
+        if (((@booking_history.end_t <= entry.start_t)\
+           || (@booking_history.start_t >= entry.end_t))\
+           && ((@booking_history.start_t == @booking_history.end_t - 1) || (@booking_history.start_t == @booking_history.end_t - 2 )))
          then
           check = 0
         else
@@ -91,7 +91,11 @@ class BookingHistoriesController < ApplicationController
        # format.json { render json: @booking_history.errors, status: :unprocessable_entity }
         end
       else
-        flash[:notice] = "Booking failed due to time conflict. Booking id #{@booking_history.id}"
+        if((@booking_history.start_t == @booking_history.end_t - 1) || (@booking_history.start_t == @booking_history.end_t - 2 ))
+          flash[:notice] = "Cannot book for more than 2 hours"
+        else
+          flash[:notice] = "Booking failed due to time conflict. Booking id #{@booking_history.id}"
+        end
         format.html { redirect_to booking_histories_path }
         end
 
